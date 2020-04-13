@@ -13,6 +13,7 @@
 
   roles:
     - disk-setup
+    - hotfix
 
 - hosts: iscsi
   become: true
