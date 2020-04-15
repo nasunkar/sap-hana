@@ -79,6 +79,13 @@ resource "azurerm_network_interface" "nic-windows" {
   }
 }
 
+/*-----------------------------------------------------------------------------8
+TODO 20200414-MKD: Move Resource block
+
+  INTO: vm-rti.tf
+
+  resource "azurerm_public_ip" "public-ip-linux"
++--------------------------------------4--------------------------------------*/
 # Creates the public IP addresses for Linux VMs
 resource "azurerm_public_ip" "public-ip-linux" {
   count               = length(var.jumpboxes.linux)
@@ -88,6 +95,13 @@ resource "azurerm_public_ip" "public-ip-linux" {
   allocation_method   = "Static"
 }
 
+/*-----------------------------------------------------------------------------8
+TODO 20200414-MKD: Move Resource block
+
+  INTO: vm-rti.tf
+
+  resource "azurerm_network_interface" "nic-linux"
++--------------------------------------4--------------------------------------*/
 # Creates the NIC and IP address for Linux VMs
 resource "azurerm_network_interface" "nic-linux" {
   count               = length(var.jumpboxes.linux)
@@ -111,6 +125,13 @@ resource "azurerm_network_interface_security_group_association" "nic-windows-nsg
   network_security_group_id = var.nsg-mgmt[0].id
 }
 
+/*-----------------------------------------------------------------------------8
+TODO 20200414-MKD: Move Resource block
+
+  INTO: vm-rti.tf
+
+  resource "azurerm_network_interface_security_group_association" "nic-linux-nsg"
++--------------------------------------4--------------------------------------*/
 resource "azurerm_network_interface_security_group_association" "nic-linux-nsg" {
   count                     = length(var.jumpboxes.linux)
   network_interface_id      = azurerm_network_interface.nic-linux[count.index].id
@@ -119,6 +140,13 @@ resource "azurerm_network_interface_security_group_association" "nic-linux-nsg" 
 
 # VIRTUAL MACHINES ================================================================================================
 
+/*-----------------------------------------------------------------------------8
+TODO 20200414-MKD: Move Resource block
+
+  INTO: vm-rti.tf
+
+  resource "azurerm_linux_virtual_machine" "vm-linux"
++--------------------------------------4--------------------------------------*/
 # Manages Linux Virtual Machine for Linux jumpboxes
 resource "azurerm_linux_virtual_machine" "vm-linux" {
   count                           = length(var.jumpboxes.linux)
@@ -249,6 +277,13 @@ resource "azurerm_windows_virtual_machine" "vm-windows" {
   }
 }
 
+/*-----------------------------------------------------------------------------8
+TODO 20200414-MKD: Move Resource block
+
+  INTO: vm-rti.tf
+
+  resource "null_resource" "prepare-rti"
++--------------------------------------4--------------------------------------*/
 # Prepare RTI:
 #   1. Copy folder ansible_config_files over to RTI
 #   2. Install Git/Ansible and clone GitHub repo on RTI
